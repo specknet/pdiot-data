@@ -1,6 +1,6 @@
 timestamp,accel_x,accel_y,accel_z,gyro_x,gyro_y,gyro_z,sensor_type,activity_type,activity_code,subject_id,notes,recording_id
 1664274555167,-0.7480469,-0.00982666,0.7670288,0.03125,-0.453125,-0.28125,Respeck,Lying down on back,2,s1911027,,Respeck_s1911027_Lying down on back_27-09-2022_11-29-45
-1664274555208,-0.7390137,-0.00592041,0.75335693,-1.5,0.125,-0.640625,Respeck,Lying down on back,2,s1911027,,Respeck_s1911027_Lying down on back_27-09-2022_11-29-45
+1664274555208,-0.7390137,-0.00592041,0.75335693,-0.6,0.125,-0.640625,Respeck,Lying down on back,2,s1911027,,Respeck_s1911027_Lying down on back_27-09-2022_11-29-45
 1664274555247,-0.7468262,-0.008850098,0.7753296,-0.65625,0.171875,-0.5,Respeck,Lying down on back,2,s1911027,,Respeck_s1911027_Lying down on back_27-09-2022_11-29-45
 1664274555285,-0.7480469,-0.014709473,0.7665405,-0.109375,0.515625,0.296875,Respeck,Lying down on back,2,s1911027,,Respeck_s1911027_Lying down on back_27-09-2022_11-29-45
 1664274555326,-0.7475586,-0.012268066,0.7704468,0.109375,0.078125,0.265625,Respeck,Lying down on back,2,s1911027,,Respeck_s1911027_Lying down on back_27-09-2022_11-29-45
