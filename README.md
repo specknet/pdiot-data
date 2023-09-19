@@ -1,2 +1,2 @@
 # pdiot-data
-Shared repository of motion capture data for the PDIoT course 2022.
+Shared repository of motion capture data for the PDIoT course.
