@@ -23,16 +23,20 @@ class DataExaminer():
         self.full_path = os.path.join(PREFIX_2023, uun)
         self.files = os.listdir(self.full_path)
         self.gt_counts = gt_counts
+        self.gt_raw_counts = {k: v / 2 for k, v in self.gt_counts.items()}
     
-    def all_checks(self, verbose: bool=True) -> bool:
+    def all_checks(self, cleaned: bool=False, verbose: bool=True) -> bool:
         integrity = self.integrity_check()
         if verbose:
             print(f"Integrity: {integrity}")
         counts = self.count_files()
+        target_counts = self.gt_counts if cleaned else self.gt_raw_counts
         if verbose:
             print(f"Counts: {counts}")
+            print(f"Target Counts: {target_counts}")
 
-        checks = [integrity, counts == self.gt_counts]
+        
+        checks = [integrity, counts == target_counts]
         if all(checks):
             return True
         return False
