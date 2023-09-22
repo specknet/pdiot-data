@@ -23,22 +23,25 @@ class DataExaminer():
         self.full_path = os.path.join(PREFIX_2023, uun)
         self.files = os.listdir(self.full_path)
         self.gt_counts = gt_counts
-        self.gt_raw_counts = {k: v / 2 for k, v in self.gt_counts.items()}
+        self.gt_raw_counts = {k: int(v / 2) for k, v in self.gt_counts.items()}
     
     def all_checks(self, cleaned: bool=False, verbose: bool=True) -> bool:
         integrity = self.integrity_check()
         if verbose:
-            print(f"Integrity: {integrity}")
+            print(f"Integrity: {integrity} for {self.uun}")
         counts = self.count_files()
         target_counts = self.gt_counts if cleaned else self.gt_raw_counts
         if verbose:
             print(f"Counts: {counts}")
-            print(f"Target Counts: {target_counts}")
+            cleaned_str = "cleaned" if cleaned else "uncleaned"
+            print(f"Target Counts when {cleaned_str}: {target_counts}")
 
         
         checks = [integrity, counts == target_counts]
         if all(checks):
+            print("All checks passed.")
             return True
+        print("Some checks failed, enable 'verbose' to see all checks")
         return False
 
     def integrity_check(self) -> bool:
@@ -62,14 +65,14 @@ class DataExaminer():
                 thingys += 1
             else:
                 raise AssertionError(f"{file} is neither respeck nor thingy recording.")
-        results["respeck"] = respecks
-        results["thingy"] = thingys
+        results["respecks"] = respecks
+        results["thingys"] = thingys
         return results
 
 
 if __name__ == "__main__":
     student = "s2047783"
     examiner = DataExaminer(student)
-    print(examiner.all_checks())
+    examiner.all_checks()
     # integrity = examiner.integrity_check()
     # counts = examiner.count_files()

@@ -20,7 +20,8 @@ class DataCleaner():
     
     def filter_thingys(self):
         '''
-        Remove any thingy recording that is not labeled as normal.
+        Remove any thingy recording that is not labeled as normal. 
+        Resulting in 12 thingy files. 
         '''
         thingys = []
         for file in self.files:
