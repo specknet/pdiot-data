@@ -26,12 +26,9 @@ class DataCleaner():
         for file in self.files:
             if "Thingy" in file:
                 thingys.append(file)
-        needed_thingys = []
         for thingy in thingys:
-            if "Normal" in thingy:
-                needed_thingys.append(thingy)
-        pprint(needed_thingys)
-        print(len(needed_thingys))
+            if "Normal" not in thingy:
+                os.remove(os.path.join(self.full_path, thingy))
 
 
 if __name__ == "__main__":
