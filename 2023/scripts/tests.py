@@ -24,9 +24,13 @@ class DataExaminer():
         self.files = os.listdir(self.full_path)
         self.gt_counts = gt_counts
     
-    def all_checks(self) -> bool:
+    def all_checks(self, verbose: bool=True) -> bool:
         integrity = self.integrity_check()
+        if verbose:
+            print(f"Integrity: {integrity}")
         counts = self.count_files()
+        if verbose:
+            print(f"Counts: {counts}")
 
         checks = [integrity, counts == self.gt_counts]
         if all(checks):
