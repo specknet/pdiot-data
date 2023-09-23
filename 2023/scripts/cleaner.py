@@ -13,6 +13,10 @@ if PREFIX_2023[-4:] == "data":
 
 # FUNCTIONS
 class DataCleaner():
+    '''
+    Not to be confused with the actual data cleaning process. 
+    It only removes redundant thingy recordings. 
+    '''
     def __init__(self, uun: str) -> None:
         self.uun = uun
         self.full_path = os.path.join(PREFIX_2023, uun)
@@ -22,6 +26,7 @@ class DataCleaner():
         '''
         Remove any thingy recording that is not labeled as normal. 
         Resulting in 12 thingy files. 
+        Warning: Back up original raw files before running. 
         '''
         thingys = []
         for file in self.files:

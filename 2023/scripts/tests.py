@@ -17,8 +17,14 @@ GT_COUNTS = {
 
 # FUNCTIONS
 class DataExaminer():
+    '''
+    Checks for: 
+     - file integrity: all files belongs to same specified student; 
+     - counts: having the right counts of total/respeck/thingy recordings before/after cleaning. 
+    '''
     def __init__(self, uun: str, path_prefix: str=PREFIX_2023, 
                  gt_counts: dict=GT_COUNTS) -> None:
+        
         self.uun = uun
         self.full_path = os.path.join(PREFIX_2023, uun)
         self.files = os.listdir(self.full_path)
@@ -73,6 +79,6 @@ class DataExaminer():
 if __name__ == "__main__":
     student = "s2047783"
     examiner = DataExaminer(student)
-    examiner.all_checks()
+    examiner.all_checks(cleaned=False)
     # integrity = examiner.integrity_check()
     # counts = examiner.count_files()
