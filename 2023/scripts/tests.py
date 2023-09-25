@@ -77,7 +77,7 @@ class DataExaminer():
 
 
 if __name__ == "__main__":
-    student = "s2047783"
+    student = "s2029970"
     examiner = DataExaminer(student)
     examiner.all_checks(cleaned=False)
     # integrity = examiner.integrity_check()
