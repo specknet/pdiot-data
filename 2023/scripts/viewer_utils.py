@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from typing import Tuple, Dict
 import matplotlib.ticker as ticker
+import os
 
 
 '''
@@ -21,14 +22,10 @@ def _extract_header_info(
     activity_code = -1
     subject_id = ""
     notes = ""
-
     with open(filename) as f:
         head = [next(f).rstrip().split("# ")[1] for x in range(header_size)]
         for l in head:
-            print(l)
-
             title, value = l.split(":")
-
             if title == "Sensor type":
                 sensor_type = value.strip()
             elif title == "Activity type":
@@ -51,13 +48,9 @@ def _extract_header_info(
 def read_data_to_df(filename: str, header_size: int=5) -> pd.DataFrame:
     df = pd.read_csv(filename, header=header_size)
     header_info = _extract_header_info(filename, header_size)
-    df.assign(**header_info)
-    
-    # df['sensor_type'] = header_info["sensor_type"]
-    # df['activity_type'] = header_info["activity_type"]
-    # df['activity_code'] = header_info["activity_code"]
-    # df['subject_id'] = header_info["subject_id"]
-    # df['notes'] = header_info["notes"]
+    df = df.assign(**header_info)  # append header info to last cols
+    df['recording_id'] = filename.split("/")[-1].split(".")[0]  # append filename as recording id
+    return df
 
 
 def get_frequency(dataframe: pd.DataFrame, ts_column: str = "timestamp") -> float:
