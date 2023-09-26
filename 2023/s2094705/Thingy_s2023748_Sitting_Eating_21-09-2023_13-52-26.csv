@@ -1,6 +1,0 @@
-# Sensor type: Thingy
-# Activity type: Sitting
-# Activity subtype: Eating
-# Subject id: s2023748
-# Notes: 
-timestamp,accel_x,accel_y,accel_z,gyro_x,gyro_y,gyro_z,mag_x,mag_y,mag_z
