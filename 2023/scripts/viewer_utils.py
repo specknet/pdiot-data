@@ -5,13 +5,12 @@ import matplotlib.ticker as ticker
 import os
 
 
-'''
+"""
 Copied from and modified based on lab 2, pdiot 2023. (PDIoT_Lab2_data_loading_visualization.ipynb)
-'''
+"""
 
-def _extract_header_info(
-    filename: str, header_size: int = 5
-) -> Dict[str, str|int]:
+
+def _extract_header_info(filename: str, header_size: int = 5) -> Dict[str, str | int]:
     """
     :param filename: Path to recording file.
     :param header_size: The size of the header, defaults to 5.
@@ -41,15 +40,18 @@ def _extract_header_info(
         "activity_type": activity_type,
         "activity_code": activity_code,
         "subject_id": subject_id,
-        "notes": notes
+        "notes": notes,
     }
     return header_info_dict
 
-def read_data_to_df(filename: str, header_size: int=5) -> pd.DataFrame:
+
+def read_data_to_df(filename: str, header_size: int = 5) -> pd.DataFrame:
     df = pd.read_csv(filename, header=header_size)
     header_info = _extract_header_info(filename, header_size)
     df = df.assign(**header_info)  # append header info to last cols
-    df['recording_id'] = filename.split("/")[-1].split(".")[0]  # append filename as recording id
+    df["recording_id"] = filename.split("/")[-1].split(".")[
+        0
+    ]  # append filename as recording id
     return df
 
 
@@ -91,7 +93,7 @@ def plot_data(dataframe: pd.DataFrame, plot_title):
 
     plot_title = plot_title
 
-    line_width = 6
+    line_width = 2
 
     # Plot respeck with custom line width
     ax[0].plot(dataframe["accel_x"], label="accel_x", linewidth=line_width)
@@ -113,8 +115,8 @@ def plot_data(dataframe: pd.DataFrame, plot_title):
     ax[0].xaxis.set_major_locator(ticker.MaxNLocator(num_xticks))
     ax[1].xaxis.set_major_locator(ticker.MaxNLocator(num_xticks))
 
-    fnt_size = 60
-    fnt_size2 = 40
+    fnt_size = 9
+    fnt_size2 = 6
 
     ax[1].set_xlabel(
         "Data point no", fontsize=fnt_size
@@ -138,5 +140,5 @@ def plot_data(dataframe: pd.DataFrame, plot_title):
     ax[0].grid(axis="x", linestyle="--", linewidth=line_width)
     ax[1].grid(axis="x", linestyle="--", linewidth=line_width)
 
-    plt.tight_layout()
+    # plt.tight_layout()
     plt.show()
