@@ -13,10 +13,6 @@ import viewer_utils
 class MplCanvas(FigureCanvasQTAgg):
 
     def __init__(self, dataframe, plot_title):
-        # fig = Figure(figsize=(width, height), dpi=dpi)
-        # self.axes = fig.add_subplot(111)
-        # super(MplCanvas, self).__init__(fig)
-
         # taken from and modified based plot_data()
         # Calculate the number of data points in your dataset
         num_data_points = len(dataframe)
@@ -87,9 +83,7 @@ class MplCanvas(FigureCanvasQTAgg):
         # Add vertical grid lines (gridlines along the x-axis)
         self.ax1.grid(axis="x", linestyle="--", linewidth=line_width)
         self.ax2.grid(axis="x", linestyle="--", linewidth=line_width)
-        
-        # plt.tight_layout()
-        # plt.show()
+
 
 class MainWindow(QtWidgets.QMainWindow):
 
@@ -108,16 +102,16 @@ class MainWindow(QtWidgets.QMainWindow):
         self.sc = MplCanvas(data, datafile)
 
         # Create labels and input boxes for integers
-        self.label1 = QtWidgets.QLabel("Trim Start Index:")
+        self.label1 = QtWidgets.QLabel("Trim Start:")
         self.input1 = QtWidgets.QLineEdit(self)
-        self.label2 = QtWidgets.QLabel("Trim End Index:")
+        self.label2 = QtWidgets.QLabel("Trim End:")
         self.input2 = QtWidgets.QLineEdit(self)
         self.input2.setValidator(QtGui.QIntValidator())  # Only allow integer input
 
         # Create buttons
-        self.record_button = QtWidgets.QPushButton("Record Trim Indexes")
+        self.record_button = QtWidgets.QPushButton("Record Trim")
         self.record_button.clicked.connect(self.record_values)
-        self.process_button = QtWidgets.QPushButton("Trim All")
+        self.process_button = QtWidgets.QPushButton("Apply Recorded Trims")
         self.process_button.clicked.connect(self.process_values)
 
         # Create a QTextEdit widget to display recorded values
@@ -148,6 +142,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.show()
 
         self.recorded_values = []  # To store recorded values
+
+        # Bind Enter key to trigger "Record Values" button click
+        self.input1.returnPressed.connect(self.record_button.click)
+        self.input2.returnPressed.connect(self.record_button.click)
 
     def record_values(self):
         value1 = self.input1.text()
