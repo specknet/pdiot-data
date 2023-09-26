@@ -20,6 +20,10 @@ class DataViewer():
         self.full_path = os.path.join(PREFIX_2023, uun)
         self.files = os.listdir(self.full_path)
     
+    def load_data(self, filename: str) -> pd.DataFrame:
+        full_filepath = os.path.join(self.full_path, filename)
+        return read_data_to_df(full_filepath)
+
     def view_data(self, filename: str) -> None:
         full_filepath = os.path.join(self.full_path, filename)
         plot_data(
