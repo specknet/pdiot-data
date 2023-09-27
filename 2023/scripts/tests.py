@@ -61,7 +61,7 @@ class DataExaminer():
 
     def count_files(self) -> Dict[str,int]:
         results = {}
-        results["total"] = len(self.files)
+        results["total"] = len(self.files) - 1  # ui_trims
         respecks = 0
         thingys = 0
         for file in self.files:
@@ -69,6 +69,8 @@ class DataExaminer():
                 respecks += 1
             elif "Thingy" in file:
                 thingys += 1
+            elif "ui_trims" in file:
+                pass
             else:
                 raise AssertionError(f"{file} is neither respeck nor thingy recording.")
         results["respecks"] = respecks

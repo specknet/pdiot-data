@@ -149,7 +149,7 @@ class MainWindow(QtWidgets.QMainWindow):
         super(MainWindow, self).__init__(*args, **kwargs)
 
         self.student = "s2047783"
-        self.datafile = "Respeck_s2047783_Lying down back_Normal_21-09-2023_12-19-29.csv"
+        self.datafile = "Thingy_s2047783_Ascending stairs_Normal_21-09-2023_12-25-56" + ".csv"
         self.viewer = DataViewer(self.student)
         self.data = self.viewer.load_data(self.datafile)
         self.index_min = self.data.index.start
@@ -245,8 +245,12 @@ class MainWindow(QtWidgets.QMainWindow):
             self.throw_warning(f"Empty Value encountered: {value1}, {value2}")
             return
         # int checks done by pyqt QIntValidator
-        value1 = int(value1)
-        value2 = int(value2)
+        try: 
+            value1 = int(value1)
+            value2 = int(value2)
+        except:
+            self.throw_warning(f"Unexpected Input: {value1}, {value2}")
+            return
         if value1 < self.index_min or value1 > self.index_max + 50:
             self.throw_warning(f"{value1} is out of index bounds: {self.index_min} ~ {self.index_max} (+50)")
             return
