@@ -223,6 +223,32 @@ class MainWindow(QtWidgets.QMainWindow):
             range_trim_end = int(self.recorded_values[i][1])
             # df_respeck = df_respeck[~((df_respeck['ind'] >= range_trim_start) & (df_respeck['ind'] <= range_trim_end))]
             self.data = self.data[~((self.data['ind'] >= range_trim_start) & (self.data['ind'] <= range_trim_end))]
+        self.data.reset_index(inplace=True, drop=True)
+
+        # Define the starting timestamp in milliseconds
+        start_timestamp_ms = self.data.timestamp[0]
+
+        # Define the number of timestamps you want to generate
+        num_timestamps = len(self.data)
+
+        # Calculate the time interval between timestamps in microseconds
+        microseconds_per_timestamp = int(1e6 / 25)
+
+        # Initialize a list to store the generated timestamps
+        timestamps = []
+
+        # Generate the timestamps
+        for i in range(num_timestamps):
+            timestamp = start_timestamp_ms + i * microseconds_per_timestamp // 1000  # Convert microseconds to milliseconds
+            timestamps.append(timestamp)
+
+        # Print the generated timestamps
+        # for timestamp in timestamps:
+        #    formatted_time = datetime.datetime.fromtimestamp(timestamp / 1000).strftime('%Y-%m-%d %H:%M:%S.%f')
+        #    print(timestamp, formatted_time[:-3])  # Print the timestamp with milliseconds
+
+        self.data['timestamp'] = timestamps
+
         # Update the plot in self.sc with the modified data
         self.sc.update_plot(self.data)
 
