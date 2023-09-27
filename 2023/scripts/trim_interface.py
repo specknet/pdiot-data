@@ -149,7 +149,7 @@ class MainWindow(QtWidgets.QMainWindow):
         super(MainWindow, self).__init__(*args, **kwargs)
 
         self.student = "s2047783"
-        self.datafile = "Respeck_s2047783_Lying down back_Hyperventilating_21-09-2023_16-01-10.csv"
+        self.datafile = "Respeck_s2047783_Lying down back_Normal_21-09-2023_12-19-29.csv"
         self.viewer = DataViewer(self.student)
         self.data = self.viewer.load_data(self.datafile)
         self.index_min = self.data.index.start
@@ -178,6 +178,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.save_button = QtWidgets.QPushButton("Save Trimmed Csv")
         self.save_button.clicked.connect(self.save_csv)
 
+        self.undo_button = QtWidgets.QPushButton("Remove Last Record")
+        self.undo_button.clicked.connect(self.remove_record)
+
         # Create a QTextEdit widget to display recorded values
         self.recorded_values_text = QtWidgets.QTextEdit(self)
         self.recorded_values_text.setReadOnly(True)
@@ -193,6 +196,7 @@ class MainWindow(QtWidgets.QMainWindow):
         button_layout.addWidget(self.record_button)
         button_layout.addWidget(self.process_button)
         button_layout.addWidget(self.save_button)
+        button_layout.addWidget(self.undo_button)
 
         # Create a central widget and add layouts
         central_widget = QtWidgets.QWidget(self)
@@ -211,19 +215,37 @@ class MainWindow(QtWidgets.QMainWindow):
         # Bind Enter key to trigger "Record Values" button click
         self.input1.returnPressed.connect(self.record_button.click)
         self.input2.returnPressed.connect(self.record_button.click)
+    
+    def remove_record(self):
+        if len(self.recorded_values) == 0:
+            self.throw_warning("Nothing recorded so far, cannot remove records. ")
+            return
+        removed = self.recorded_values.pop()
+        self.update_recorded_values_text()
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Information)
+        msg.setText("Removed last record")
+        msg.setInformativeText(f"Removed values: {removed}")
+        msg.setWindowTitle("Undo")
+        msg.exec_()
 
     def throw_warning(self, txt: str):
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Critical)
-        msg.setText("Errpr")
+        msg.setText("Error")
         msg.setInformativeText(txt)
         msg.setWindowTitle("Error")
         msg.exec_()
 
     def record_values(self):
-        value1 = int(self.input1.text())
-        value2 = int(self.input2.text())
+        value1 = self.input1.text()
+        value2 = self.input2.text()
+        if value1 == "" or value2 == "":
+            self.throw_warning(f"Empty Value encountered: {value1}, {value2}")
+            return
         # int checks done by pyqt QIntValidator
+        value1 = int(value1)
+        value2 = int(value2)
         if value1 < self.index_min or value1 > self.index_max + 50:
             self.throw_warning(f"{value1} is out of index bounds: {self.index_min} ~ {self.index_max} (+50)")
             return
