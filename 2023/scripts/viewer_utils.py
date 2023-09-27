@@ -93,7 +93,7 @@ def plot_data(dataframe: pd.DataFrame, plot_title):
 
     plot_title = plot_title
 
-    line_width = 2
+    line_width = 1
 
     # Plot respeck with custom line width
     ax[0].plot(dataframe["accel_x"], label="accel_x", linewidth=line_width)
