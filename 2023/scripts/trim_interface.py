@@ -40,7 +40,7 @@ class MplCanvas(FigureCanvasQTAgg):
 
         plot_title = plot_title
 
-        line_width = 2
+        line_width = 1
 
         # Plot respeck with custom line width
         self.ax1.plot(dataframe["accel_x"], label="accel_x", linewidth=line_width)
@@ -170,6 +170,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.record_button.clicked.connect(self.record_values)
         self.process_button = QtWidgets.QPushButton("Apply Recorded Trims")
         self.process_button.clicked.connect(self.process_values)
+        
+        self.save_button = QtWidgets.QPushButton("Save Trimmed Csv")
+        self.save_button.clicked.connect(self.save_csv)
 
         # Create a QTextEdit widget to display recorded values
         self.recorded_values_text = QtWidgets.QTextEdit(self)
@@ -185,6 +188,7 @@ class MainWindow(QtWidgets.QMainWindow):
         button_layout = QtWidgets.QHBoxLayout()
         button_layout.addWidget(self.record_button)
         button_layout.addWidget(self.process_button)
+        button_layout.addWidget(self.save_button)
 
         # Create a central widget and add layouts
         central_widget = QtWidgets.QWidget(self)
@@ -251,7 +255,12 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # Update the plot in self.sc with the modified data
         self.sc.update_plot(self.data)
-
+        self.recorded_values.clear()
+        self.recorded_values_text.clear()
+    
+    def save_csv(self):
+        filepath = os.path.join(self.viewer.full_path, "./ui_trims", self.datafile)
+        self.data.to_csv(filepath, index=False)
 
     def update_recorded_values_text(self):
         # Update the QTextEdit widget to display recorded values
