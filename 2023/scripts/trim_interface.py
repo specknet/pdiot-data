@@ -208,7 +208,8 @@ class MainWindow(QtWidgets.QMainWindow):
         central_widget.setLayout(central_layout)
 
         self.setCentralWidget(central_widget)
-        self.show()
+        # self.show()
+        self.showMaximized()
 
         self.recorded_values = []  # To store recorded values
 
