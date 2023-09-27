@@ -94,7 +94,7 @@ class MplCanvas(FigureCanvasQTAgg):
         self.ax2.clear()
 
         # Update the plots with new data
-        line_width = 2
+        line_width = 1
         self.ax1.plot(new_data["accel_x"], label="accel_x", linewidth=line_width)
         self.ax1.plot(new_data["accel_y"], label="accel_y", linewidth=line_width)
         self.ax1.plot(new_data["accel_z"], label="accel_z", linewidth=line_width)
@@ -148,7 +148,7 @@ class MainWindow(QtWidgets.QMainWindow):
         super(MainWindow, self).__init__(*args, **kwargs)
 
         self.student = "s2047783"
-        self.datafile = "Respeck_s2047783_Ascending stairs_Normal_21-09-2023_12-25-57.csv"
+        self.datafile = "./ui_trims/Respeck_s2047783_Ascending stairs_Normal_21-09-2023_12-25-57.csv"
         self.viewer = DataViewer(self.student)
         self.data = self.viewer.load_data(self.datafile)
 
@@ -259,7 +259,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.recorded_values_text.clear()
     
     def save_csv(self):
-        filepath = os.path.join(self.viewer.full_path, "./ui_trims", self.datafile)
+        if not "ui_trims" in self.datafile:
+            filepath = os.path.join(self.viewer.full_path, "./ui_trims", self.datafile)
+        else:
+            filepath = os.path.join(self.viewer.full_path, self.datafile)
         self.data.to_csv(filepath, index=False)
 
     def update_recorded_values_text(self):
