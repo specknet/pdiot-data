@@ -147,8 +147,8 @@ class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
 
-        self.student = "s2047783"
-        self.datafile = "./ui_trims/Respeck_s2047783_Ascending stairs_Normal_21-09-2023_12-25-57.csv"
+        self.student = "s1234567"
+        self.datafile = "./ui_trims/Respeck_s1234567_Ascending stairs_Normal_21-09-2023_12-25-57.csv"
         self.viewer = DataViewer(self.student)
         self.data = self.viewer.load_data(self.datafile)
 
@@ -269,7 +269,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # Update the QTextEdit widget to display recorded values
         self.recorded_values_text.clear()
         for values in self.recorded_values:
-            self.recorded_values_text.append(f"Value 1: {values[0]}, Value 2: {values[1]}")
+            self.recorded_values_text.append(f"Trim Start: {values[0]}, Trim End: {values[1]}")
 
 app = QtWidgets.QApplication(sys.argv)
 w = MainWindow()
