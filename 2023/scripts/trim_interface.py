@@ -10,6 +10,7 @@ import matplotlib.ticker as ticker
 from viewer import DataViewer
 import viewer_utils
 import os
+from PyQt5.QtWidgets import QMessageBox
 
 class MplCanvas(FigureCanvasQTAgg):
 
@@ -147,10 +148,12 @@ class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
 
-        self.student = "s1234567"
-        self.datafile = "./ui_trims/Respeck_s1234567_Ascending stairs_Normal_21-09-2023_12-25-57.csv"
+        self.student = "s2047783"
+        self.datafile = "Respeck_s2047783_Lying down back_Hyperventilating_21-09-2023_16-01-10.csv"
         self.viewer = DataViewer(self.student)
         self.data = self.viewer.load_data(self.datafile)
+        self.index_min = self.data.index.start
+        self.index_max = self.data.index.stop
 
         # Create the matplotlib FigureCanvas object,
         # which defines a single set of axes as self.axes.
@@ -163,6 +166,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.input1 = QtWidgets.QLineEdit(self)
         self.label2 = QtWidgets.QLabel("Trim End:")
         self.input2 = QtWidgets.QLineEdit(self)
+        self.input1.setValidator(QtGui.QIntValidator())
         self.input2.setValidator(QtGui.QIntValidator())  # Only allow integer input
 
         # Create buttons
@@ -208,9 +212,24 @@ class MainWindow(QtWidgets.QMainWindow):
         self.input1.returnPressed.connect(self.record_button.click)
         self.input2.returnPressed.connect(self.record_button.click)
 
+    def throw_warning(self, txt: str):
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Critical)
+        msg.setText("Errpr")
+        msg.setInformativeText(txt)
+        msg.setWindowTitle("Error")
+        msg.exec_()
+
     def record_values(self):
-        value1 = self.input1.text()
-        value2 = self.input2.text()
+        value1 = int(self.input1.text())
+        value2 = int(self.input2.text())
+        # int checks done by pyqt QIntValidator
+        if value1 < self.index_min or value1 > self.index_max + 50:
+            self.throw_warning(f"{value1} is out of index bounds: {self.index_min} ~ {self.index_max} (+50)")
+            return
+        if value2 < self.index_min or value2 > self.index_max + 50:
+            self.throw_warning(f"{value2} is out of index bounds: {self.index_min} ~ {self.index_max} (+50)")
+            return
         self.recorded_values.append((value1, value2))
         self.update_recorded_values_text()
 
@@ -223,11 +242,13 @@ class MainWindow(QtWidgets.QMainWindow):
         self.data['ind'] = self.data.index
         to_trim = len(self.recorded_values)
         for i in range(int(to_trim)):
-            range_trim_start = int(self.recorded_values[i][0])
-            range_trim_end = int(self.recorded_values[i][1])
+            range_trim_start = self.recorded_values[i][0]
+            range_trim_end = self.recorded_values[i][1]
             # df_respeck = df_respeck[~((df_respeck['ind'] >= range_trim_start) & (df_respeck['ind'] <= range_trim_end))]
             self.data = self.data[~((self.data['ind'] >= range_trim_start) & (self.data['ind'] <= range_trim_end))]
         self.data.reset_index(inplace=True, drop=True)
+        self.index_min = self.data.index.start
+        self.index_max = self.data.index.stop
 
         # Define the starting timestamp in milliseconds
         start_timestamp_ms = self.data.timestamp[0]
