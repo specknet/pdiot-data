@@ -38,7 +38,7 @@ class DataViewer():
 
 if __name__ == "__main__":
     student = "s2047783"
-    datafile = "./ui_trims/Respeck_s2047783_Ascending stairs_Normal_21-09-2023_12-25-57.csv"
+    datafile = "./ui_trims/Thingy_s2047783_Sitting_Normal_22-09-2023_15-10-06.csv"
     # datafile = "Respeck_s2047783_Lying down back_Hyperventilating_21-09-2023_16-01-10.csv"
     viewer = DataViewer(student)
     viewer.view_data(datafile)
