@@ -1,5 +1,10 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QLabel
+import numpy as np
+import matplotlib.pyplot as plt
+from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget
+from PyQt5.QtCore import Qt
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
 
 class MyWindow(QMainWindow):
     def __init__(self):
@@ -9,10 +14,10 @@ class MyWindow(QMainWindow):
 
     def initUI(self):
         # 设置主窗口标题
-        self.setWindowTitle('Three Vertical Areas')
+        self.setWindowTitle('Matplotlib Figures in PyQt5')
 
         # 设置窗口尺寸
-        self.setGeometry(100, 100, 400, 300)
+        self.setGeometry(100, 100, 800, 600)
 
         # 创建一个主窗口中的中心部件
         central_widget = QWidget()
@@ -21,17 +26,15 @@ class MyWindow(QMainWindow):
         # 创建一个垂直布局
         layout = QVBoxLayout(central_widget)
 
-        # 创建第一个区域，大小比例为3
-        label1 = QLabel('Area 1 (3x)', self)
-        layout.addWidget(label1, 6)  # 3表示分配更多的空间
-
-        # 创建第二个区域，大小比例为1
-        label2 = QLabel('Area 2 (1x)', self)
-        layout.addWidget(label2, 2)
-
-        # 创建第三个区域，大小比例为0.5
-        label3 = QLabel('Area 3 (0.5x)', self)
-        layout.addWidget(label3, 1)
+        # 创建三个Matplotlib图表
+        for i in range(3):
+            figure = Figure()
+            canvas = FigureCanvas(figure)
+            ax = figure.add_subplot(111)
+            x = np.linspace(0, 2 * np.pi, 100)
+            y = np.sin(x)
+            ax.plot(x, y)
+            layout.addWidget(canvas)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
