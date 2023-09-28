@@ -149,7 +149,7 @@ class MainWindow(QtWidgets.QMainWindow):
         super(MainWindow, self).__init__(*args, **kwargs)
 
         self.student = "s2047783"
-        self.datafile = "Thingy_s2047783_Standing_Normal_21-09-2023_12-15-58" + ".csv"
+        self.datafile = "Respeck_s2047783_Lying down on left_Hyperventilating_21-09-2023_15-59-14" + ".csv"
         self.viewer = DataViewer(self.student)
         self.data = self.viewer.load_data(self.datafile)
         self.index_min = self.data.index.start
