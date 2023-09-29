@@ -46,12 +46,12 @@ class MyWindow(QMainWindow):
         area2.setStyleSheet("background-color: green;")
         layout.addWidget(area2, 2)
 
-        # 创建一个垂直布局
+        # 创建一个水平布局
         filelist_layout = QHBoxLayout(area2)
 
         # 创建三个文件列表视图和路径选择按钮
         for i in range(3):
-            # 创建一个水平布局用于容纳文件列表、路径选择按钮和文件列表标题
+            # 创建一个垂直布局用于容纳文件列表、路径选择按钮和文件列表标题
             row_layout = QVBoxLayout()
 
             # 创建文件列表标题
