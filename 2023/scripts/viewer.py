@@ -22,12 +22,14 @@ class DataViewer():
     
     def load_data(self, filename: str) -> pd.DataFrame:
         full_filepath = os.path.join(self.full_path, filename)
-        header = 0 if "ui_trims" in filename else 5
+        # header = 0 if "ui_trims" in filename else 5
+        header = 0 if "clean" in filename else 5
         return read_data_to_df(full_filepath, header)
 
     def view_data(self, filename: str) -> None:
         full_filepath = os.path.join(self.full_path, filename)
-        header = 0 if "ui_trims" in filename else 5  # cleaned data does not have header
+        # header = 0 if "ui_trims" in filename else 5  # cleaned data does not have header
+        header = 0 if "clean" in filename else 5
         df = read_data_to_df(full_filepath, header_size=header)
         print(df.index.start)
         print(df.index.stop)
@@ -38,7 +40,7 @@ class DataViewer():
 
 if __name__ == "__main__":
     student = "s2047783"
-    datafile = "./ui_trims/Thingy_s2047783_Sitting_Normal_22-09-2023_15-10-06.csv"
+    datafile = "Respeck_s2047783_Lying down back_Hyperventilating_clean_21-09-2023_16-01-10.csv"
     # datafile = "Respeck_s2047783_Lying down back_Hyperventilating_21-09-2023_16-01-10.csv"
     viewer = DataViewer(student)
     viewer.view_data(datafile)
