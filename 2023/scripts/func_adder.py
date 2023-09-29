@@ -4,18 +4,24 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QFi
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 import os
+import pandas as pd
+import viewer_utils
+import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 
 class MyWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
         self.selected_files = ["" for _ in range(3)]
+        self.figures = []
+        self.folders = ["" for _ in range(3)]
 
         self.initUI()
 
     def initUI(self):
         self.setWindowTitle('Matplotlib in PyQt5')
-        self.setGeometry(100, 100, 800, 600)
+        self.setGeometry(0, 0, 1920, 1080)
 
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
@@ -27,26 +33,27 @@ class MyWindow(QMainWindow):
         # 创建第一个区域，大小比例为6，用于显示Matplotlib图形
         area1 = QWidget(self)
         area1.setStyleSheet("background-color: red;")  # 设置背景颜色以区分区域
-        layout.addWidget(area1, 6)
+        self.area1 = area1
+        layout.addWidget(area1, 15)
 
         sub_layout = QVBoxLayout(area1)
         # 在第一个区域中添加Matplotlib图形，上下排列
         for i in range(3):
             figure = Figure()
             canvas = FigureCanvas(figure)
-            ax = figure.add_subplot(111)
+            ax = figure.add_subplot(121)
+            ax = figure.add_subplot(122)
             x = np.linspace(0, 2 * np.pi, 100)
             y = np.sin(x)
             ax.plot(x, y)
-
-            # 创建一个垂直布局，用于放置Matplotlib图形
-            
             sub_layout.addWidget(canvas)
+            self.figures.append(figure)
 
         # 创建第二个区域，大小比例为2
         area2 = QWidget(self)
         area2.setStyleSheet("background-color: green;")
-        layout.addWidget(area2, 2)
+        self.area2 = area2
+        layout.addWidget(area2, 3)
 
         # 创建一个水平布局
         filelist_layout = QHBoxLayout(area2)
@@ -76,6 +83,15 @@ class MyWindow(QMainWindow):
         area3 = QWidget(self)
         area3.setStyleSheet("background-color: blue;")
         layout.addWidget(area3, 1)
+
+        # 在area3中创建一个QPushButton
+        button_in_area3 = QPushButton("Click Me", self)
+        button_in_area3.clicked.connect(self.update_charts)
+        layout_in_area3 = QVBoxLayout(area3)
+        layout_in_area3.addWidget(button_in_area3)
+    
+    def update_charts(self):
+        pass
     
     def select_path(self, index, file_list):
         # 打开文件对话框以选择路径
@@ -90,11 +106,85 @@ class MyWindow(QMainWindow):
                 if os.path.isfile(os.path.join(folder_path, file)):
                     item = QListWidgetItem(file)
                     file_list.addItem(item)
+        self.folders[index] = folder_path
     
     def select_datafile(self, item, idx=-1):
         # print(f"{idx} Selected: {item.text()}")
         self.selected_files[idx] = item.text()
-        print(self.selected_files)
+        # print(self.selected_files)
+        self.resize(1280, 720)
+        self.update_plots(idx, item.text())
+    
+    def update_plots(self, idx, datafile):
+        figure = self.figures[idx]
+        full_path = os.path.join(
+            self.folders[idx], datafile
+        )
+        cleaned = False
+        if "clean" in datafile or "ui_trims" in full_path:
+            cleaned = True
+        header_size = 0 if cleaned else 5
+        df = pd.read_csv(full_path, header=header_size)
+        # TODO: check frequency and length as well here? display them
+        self._plot_data(figure, df, datafile)
+    
+    def _plot_data(self, fig: Figure, dataframe: pd.DataFrame, datafile: str):
+        axes = fig.get_axes()
+        for ax in axes:
+            ax.clear()
+        num_data_points = len(dataframe)
+        figure_width = num_data_points / 10  # Adjust the divisor to control the size
+        aspect_ratio = 0.3  # You can adjust this value as needed
+        figure_height = figure_width * aspect_ratio
+        fig.set_size_inches(figure_width, figure_height)
+        plot_title = datafile
+        line_width = 1
+        # Plot respeck with custom line width
+        axes[0].plot(dataframe["accel_x"], label="accel_x", linewidth=line_width)
+        axes[0].plot(dataframe["accel_y"], label="accel_y", linewidth=line_width)
+        axes[0].plot(dataframe["accel_z"], label="accel_z", linewidth=line_width)
+        axes[0].legend()
+        # axes[0].set_title(
+        #     f"Accelerometer data"
+        # )
+        # Plot gyroscope data
+        axes[1].plot(dataframe["gyro_x"], label="gyro_x", linewidth=line_width)
+        axes[1].plot(dataframe["gyro_y"], label="gyro_y", linewidth=line_width)
+        axes[1].plot(dataframe["gyro_z"], label="gyro_z", linewidth=line_width)
+        axes[1].legend()
+        num_xticks = len(dataframe) // 10
+        axes[0].xaxis.set_major_locator(ticker.MaxNLocator(num_xticks))
+        axes[1].xaxis.set_major_locator(ticker.MaxNLocator(num_xticks))
+        fnt_size = 9
+        fnt_size2 = 6
+        axes[1].set_xlabel(
+            "Data point no", fontsize=fnt_size
+        )  # Adjust fontsize for the x-axis label
+        axes[0].set_ylabel(
+            "Acceleration", fontsize=fnt_size
+        )  # Adjust fontsize for the y-axis label
+        axes[1].set_ylabel("Gyroscope", fontsize=fnt_size)
+        # Adjust fontsize of individual ticks on the x-axis and y-axis for both subplots
+        axes[0].tick_params(axis="both", labelsize=fnt_size2)
+        axes[1].tick_params(axis="both", labelsize=fnt_size2)
+        # Rotate x-axis tick labels by 45 degrees for both subplots
+        axes[0].tick_params(axis="x", labelrotation=45)
+        axes[1].tick_params(axis="x", labelrotation=45)
+        # axes[0].set_title(plot_title, size=fnt_size)
+        # axes[1].set_title(plot_title, size=fnt_size)
+        # Add vertical grid lines (gridlines along the x-axis)
+        axes[0].grid(axis="x", linestyle="--", linewidth=line_width)
+        axes[1].grid(axis="x", linestyle="--", linewidth=line_width)
+        fig.suptitle(plot_title)
+        # fig.canvas.figure = fig
+        fig.canvas.draw()
+        # self.adjustSize()
+        # self.showMaximized()
+        self.resize(1920, 1080)
+        # self.Refresh()
+        # self.showMaximized()
+        # self.resize(self.size())
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
