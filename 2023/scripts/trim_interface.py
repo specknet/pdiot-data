@@ -144,7 +144,7 @@ class MplCanvas(FigureCanvasQTAgg):
 
 
 class MainWindow(QtWidgets.QMainWindow):
-
+    # TODO: automatically trim final df to 750 (30s)
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
 
