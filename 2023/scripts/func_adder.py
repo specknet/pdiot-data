@@ -16,6 +16,8 @@ class MyWindow(QMainWindow):
         self.selected_files = ["" for _ in range(3)]
         self.figures = []
         self.folders = ["" for _ in range(3)]
+        self.view_cleaned_file = 1  # 0 for unprocessed
+        self.filelists = []
 
         self.initUI()
 
@@ -70,6 +72,7 @@ class MyWindow(QMainWindow):
             # 创建文件列表视图
             file_list = QListWidget(self)
             file_list.itemClicked.connect(lambda item, idx=i: self.select_datafile(item, idx=idx))
+            self.filelists.append(file_list)
             row_layout.addWidget(file_list)
 
             # 创建选择路径的按钮
@@ -85,13 +88,46 @@ class MyWindow(QMainWindow):
         layout.addWidget(area3, 1)
 
         # 在area3中创建一个QPushButton
-        button_in_area3 = QPushButton("Click Me", self)
-        button_in_area3.clicked.connect(self.update_charts)
-        layout_in_area3 = QVBoxLayout(area3)
-        layout_in_area3.addWidget(button_in_area3)
+        toggle_button = QPushButton("Toggle Unprocessed / Clean Data")
+        toggle_button.clicked.connect(self.toggle_mode)
+        previous_file_button = QPushButton("Previous File", self)
+        previous_file_button.clicked.connect(self.previous_file)
+        next_file_button = QPushButton("Next File", self)
+        next_file_button.clicked.connect(self.next_file)
+        layout_in_area3 = QHBoxLayout(area3)
+        layout_in_area3.addWidget(toggle_button)
+        layout_in_area3.addWidget(previous_file_button)
+        layout_in_area3.addWidget(next_file_button)
     
-    def update_charts(self):
+    def toggle_mode(self):
+        if self.view_cleaned_file == 1:
+            self.view_cleaned_file = 0
+        else:
+            self.view_cleaned_file = 1
+        self.update_files()
+
+    def previous_file(self):
         pass
+
+    def next_file(self):
+        pass
+
+    def update_files(self):
+        for i in range(3):
+            if self.folders[i] == "":
+                continue
+            self.filelists[i].clear()
+            files = os.listdir(self.folders[i])
+            for file in files:
+                if os.path.isfile(os.path.join(self.folders[i], file)):
+                    if self.view_cleaned_file:
+                        if "clean" in file:
+                            item = QListWidgetItem(file)
+                            self.filelists[i].addItem(item)
+                    else:
+                        if "clean" not in file:
+                            item = QListWidgetItem(file)
+                            self.filelists[i].addItem(item)
     
     def select_path(self, index, file_list):
         # 打开文件对话框以选择路径
@@ -104,8 +140,14 @@ class MyWindow(QMainWindow):
             files = os.listdir(folder_path)
             for file in files:
                 if os.path.isfile(os.path.join(folder_path, file)):
-                    item = QListWidgetItem(file)
-                    file_list.addItem(item)
+                    if self.view_cleaned_file:
+                        if "clean" in file:
+                            item = QListWidgetItem(file)
+                            file_list.addItem(item)
+                    else:
+                        if "clean" not in file:
+                            item = QListWidgetItem(file)
+                            file_list.addItem(item)
         self.folders[index] = folder_path
     
     def select_datafile(self, item, idx=-1):
