@@ -9,6 +9,8 @@ class MyWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
+        self.selected_files = ["" for _ in range(3)]
+
         self.initUI()
 
     def initUI(self):
@@ -60,6 +62,7 @@ class MyWindow(QMainWindow):
 
             # 创建文件列表视图
             file_list = QListWidget(self)
+            file_list.itemClicked.connect(lambda item, idx=i: self.select_datafile(item, idx=idx))
             row_layout.addWidget(file_list)
 
             # 创建选择路径的按钮
@@ -87,6 +90,11 @@ class MyWindow(QMainWindow):
                 if os.path.isfile(os.path.join(folder_path, file)):
                     item = QListWidgetItem(file)
                     file_list.addItem(item)
+    
+    def select_datafile(self, item, idx=-1):
+        # print(f"{idx} Selected: {item.text()}")
+        self.selected_files[idx] = item.text()
+        print(self.selected_files)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
