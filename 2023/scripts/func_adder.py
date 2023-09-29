@@ -107,10 +107,27 @@ class MyWindow(QMainWindow):
         self.update_files()
 
     def previous_file(self):
-        pass
+        for i in range(3):
+            current_item = self.filelists[i].currentItem()
+            if current_item:
+                current_row = self.filelists[i].row(current_item)
+                if current_row > 0:
+                    self.filelists[i].setCurrentItem(self.filelists[i].item(current_row - 1))
+                    self.select_datafile(
+                        self.filelists[i].currentItem(), i
+                    )
 
     def next_file(self):
-        pass
+        for i in range(3):
+            current_item = self.filelists[i].currentItem()
+            if current_item:
+                current_row = self.filelists[i].row(current_item)
+                if current_row < self.filelists[i].count() - 1:
+                    self.filelists[i].setCurrentItem(self.filelists[i].item(current_row + 1))
+                    self.select_datafile(
+                        self.filelists[i].currentItem(), i
+                    )
+
 
     def update_files(self):
         for i in range(3):
