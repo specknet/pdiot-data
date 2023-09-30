@@ -1,8 +1,3 @@
-# Sensor type: Respeck
-# Activity type: Lying down on left
-# Activity subtype: Singing
-# Subject id: s2094705
-# Notes: 
 timestamp,accel_x,accel_y,accel_z,gyro_x,gyro_y,gyro_z
 1695311231797,-0.7297363,-0.17926025,-0.6255493,-0.578125,0.65625,0.96875
 1695311231814,-0.7246094,-0.17388916,-0.61138916,0.5,-0.484375,0.65625

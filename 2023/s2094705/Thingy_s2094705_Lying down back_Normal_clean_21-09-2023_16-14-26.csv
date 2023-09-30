@@ -1,8 +1,3 @@
-# Sensor type: Thingy
-# Activity type: Lying down back
-# Activity subtype: Normal
-# Subject id: s2094705
-# Notes: 
 timestamp,accel_x,accel_y,accel_z,gyro_x,gyro_y,gyro_z,mag_x,mag_y,mag_z
 1695309236498,0.23339844,-0.9013672,0.35351562,-0.75,-0.125,0.21875,39.4375,-36.25,-73.375
 1695309236528,0.21875,-0.9013672,0.3515625,-1.0625,-0.4375,0.625,0.0,0.0,0.0

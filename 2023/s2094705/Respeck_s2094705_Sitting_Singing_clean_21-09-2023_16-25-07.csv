@@ -1,8 +1,3 @@
-# Sensor type: Respeck
-# Activity type: Sitting
-# Activity subtype: Singing
-# Subject id: s2094705
-# Notes: 
 timestamp,accel_x,accel_y,accel_z,gyro_x,gyro_y,gyro_z
 1695309870473,-0.13671875,-0.96954346,0.25628662,-1.046875,1.390625,0.34375
 1695309870519,-0.15307617,-0.9846802,0.27215576,-1.421875,0.859375,0.390625

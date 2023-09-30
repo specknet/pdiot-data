@@ -1,8 +1,3 @@
-# Sensor type: Respeck
-# Activity type: Standing
-# Activity subtype: Talking
-# Subject id: s2094705
-# Notes: 
 timestamp,accel_x,accel_y,accel_z,gyro_x,gyro_y,gyro_z
 1695310166876,-0.053466797,-0.9927368,0.20135498,-0.171875,2.25,1.125
 1695310166922,-0.057128906,-0.98931885,0.19866943,0.421875,1.53125,0.640625

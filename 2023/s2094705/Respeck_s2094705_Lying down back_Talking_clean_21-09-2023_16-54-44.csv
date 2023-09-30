@@ -1,8 +1,3 @@
-# Sensor type: Respeck
-# Activity type: Lying down back
-# Activity subtype: Talking
-# Subject id: s2094705
-# Notes: 
 timestamp,accel_x,accel_y,accel_z,gyro_x,gyro_y,gyro_z
 1695311652865,-0.6723633,-0.15411377,0.83465576,0.015625,0.359375,0.828125
 1695311652893,-0.6750488,-0.1428833,0.85858154,1.03125,-0.9375,1.125
