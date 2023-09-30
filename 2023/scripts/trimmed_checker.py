@@ -10,8 +10,8 @@ if PREFIX_2023[-4:] == "data":
     )
 
 redo_needed = {  # item: note
-    "standing_hyperventilating": "confused w/sittt",
-    "sitting_hyperventilating": "confused w/stand"
+    # "standing_hyperventilating": "confused w/sittt",
+    # "sitting_hyperventilating": "confused w/stand"
 }
 
 need_less = {}

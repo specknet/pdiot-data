@@ -149,7 +149,7 @@ class MainWindow(QtWidgets.QMainWindow):
         super(MainWindow, self).__init__(*args, **kwargs)
 
         self.student = "s2047783"
-        self.datafile = "redo/Thingy_s2047783_Normal walking_Normal_28-09-2023_15-43-02" + ".csv"
+        self.datafile = "Respeck_s2047783_Sitting_Eating_clean_21-09-2023_16-06-25" + ".csv"
         self.viewer = DataViewer(self.student)
         self.data = self.viewer.load_data(self.datafile)
         self.index_min = self.data.index.start
@@ -307,6 +307,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.recorded_values_text.clear()
     
     def save_csv(self):
+        save_folder = os.path.join(self.viewer.full_path, "./ui_trims")
+        if not os.path.exists(save_folder):
+            os.mkdir(save_folder)
         if not "ui_trims" in self.datafile:
             filepath = os.path.join(self.viewer.full_path, "./ui_trims", self.datafile)
         else:

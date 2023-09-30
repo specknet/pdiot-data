@@ -61,7 +61,7 @@ class DataExaminer():
 
     def count_files(self) -> Dict[str,int]:
         results = {}
-        results["total"] = len(self.files) - 1  # ui_trims
+        results["total"] = len(self.files)
         respecks = 0
         thingys = 0
         for file in self.files:
@@ -81,6 +81,6 @@ class DataExaminer():
 if __name__ == "__main__":
     student = "s2047783"
     examiner = DataExaminer(student)
-    examiner.all_checks(cleaned=False)
+    examiner.all_checks(cleaned=True)
     # integrity = examiner.integrity_check()
     # counts = examiner.count_files()
