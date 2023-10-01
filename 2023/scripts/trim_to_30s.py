@@ -13,8 +13,8 @@ if PREFIX_2023[-4:] == "data":
 
 student = "s2047783"
 folder_path = os.path.join(PREFIX_2023, student)
-file_names = [filename for filename in os.listdir(folder_path) if "clean" in filename]
-# file_names = ["Respeck_s2047783_Lying down back_Singing_clean_21-09-2023_16-31-42.csv"]
+# file_names = [filename for filename in os.listdir(folder_path) if "clean" in filename]
+file_names = ["Respeck_s2047783_Lying down on left_Hyperventilating_clean_01-10-2023_13-45-20.csv"]
 
 for filename in file_names:
     full_path = os.path.join(folder_path, filename)
