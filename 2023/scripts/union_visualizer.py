@@ -29,7 +29,7 @@ class MyWindow(QMainWindow):
         self.initUI()
 
     def initUI(self):
-        self.setWindowTitle('Matplotlib in PyQt5')
+        self.setWindowTitle('Union Visualizer for PDIoT Cw1')
         self.setGeometry(0, 0, 1920, 1080)
 
         central_widget = QWidget()
