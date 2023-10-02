@@ -55,9 +55,14 @@ class DataExaminer():
             print(f"Counts: {counts}")
             cleaned_str = "cleaned" if cleaned else "uncleaned"
             print(f"Target Counts when {cleaned_str}: {target_counts}")
-
+        lengths = self.length_checks()
+        if verbose or lengths:
+            print(f"Lengths: {lengths}")
+        freqs = self.frequency_checks()
+        if verbose or freqs:
+            print(f"Frequencys: {freqs}")
         
-        checks = [integrity, counts == target_counts]
+        checks = [integrity, counts == target_counts, lengths == ({}, {}), freqs == {}]
         if all(checks):
             print("All checks passed.")
             return True
@@ -143,11 +148,15 @@ class DataExaminer():
 
 
 if __name__ == "__main__":
-    student = "s2047783"
-    examiner = DataExaminer(student)
-    # examiner.all_checks(cleaned=True)
-    # integrity = examiner.integrity_check()
-    # counts = examiner.count_files()
-    # lengths = examiner.length_checks()
-    freqs = examiner.frequency_checks()
-    print(freqs)
+    students = [
+        "s2016022", "s2029970", "s2047783"
+    ]
+    for student in students:
+        # student = "s2047783"
+        examiner = DataExaminer(student)
+        examiner.all_checks(cleaned=True)
+        # integrity = examiner.integrity_check()
+        # counts = examiner.count_files()
+        # lengths = examiner.length_checks()
+        # freqs = examiner.frequency_checks()
+        # print(freqs)
