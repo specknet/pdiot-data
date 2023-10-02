@@ -18,6 +18,13 @@ class MyWindow(QMainWindow):
         self.folders = ["" for _ in range(3)]
         self.view_cleaned_file = 1  # 0 for unprocessed
         self.filelists = []
+        self.lengths = []
+        self.frequencies = []
+
+        self.hints = {
+            "len": "Recording Length",
+            "freq": "Recording Frequency"
+        }
 
         self.initUI()
 
@@ -26,6 +33,7 @@ class MyWindow(QMainWindow):
         self.setGeometry(0, 0, 1920, 1080)
 
         central_widget = QWidget()
+        central_widget.setStyleSheet("background-color: #FFEEDB;")
         self.setCentralWidget(central_widget)
 
         # 创建一个垂直布局，用于容纳三个区域，并设置比例
@@ -34,7 +42,7 @@ class MyWindow(QMainWindow):
 
         # 创建第一个区域，大小比例为6，用于显示Matplotlib图形
         area1 = QWidget(self)
-        area1.setStyleSheet("background-color: red;")  # 设置背景颜色以区分区域
+        area1.setStyleSheet("background-color: #FFFFFF;")  # 设置背景颜色以区分区域
         self.area1 = area1
         layout.addWidget(area1, 15)
 
@@ -53,7 +61,7 @@ class MyWindow(QMainWindow):
 
         # 创建第二个区域，大小比例为2
         area2 = QWidget(self)
-        area2.setStyleSheet("background-color: green;")
+        area2.setStyleSheet("background-color: #AA8F66;")
         self.area2 = area2
         layout.addWidget(area2, 3)
 
@@ -84,7 +92,7 @@ class MyWindow(QMainWindow):
 
         # 创建第三个区域，大小比例为1
         area3 = QWidget(self)
-        area3.setStyleSheet("background-color: blue;")
+        area3.setStyleSheet("background-color: #ED9B40;")
         layout.addWidget(area3, 1)
 
         # 在area3中创建一个QPushButton
@@ -98,6 +106,29 @@ class MyWindow(QMainWindow):
         layout_in_area3.addWidget(toggle_button)
         layout_in_area3.addWidget(previous_file_button)
         layout_in_area3.addWidget(next_file_button)
+
+        area4 = QWidget(self)
+        area4.setStyleSheet("background-color: #61C9A8;")
+        layout.addWidget(area4, 1)
+
+        recording_info_layout = QHBoxLayout(area4)
+        for i in range(3):
+            row_layout = QVBoxLayout()
+
+            data_length_label = QLabel(f"{self.hints['len']} {i + 1}: ")
+            self.lengths.append(data_length_label)
+            row_layout.addWidget(data_length_label)
+
+            data_freq_label = QLabel(f"{self.hints['freq']} {i + 1}: ")
+            self.frequencies.append(data_freq_label)
+            row_layout.addWidget(data_freq_label)
+
+            placeholder = QLabel("------------------------------------------------------------------------")
+            row_layout.addWidget(placeholder)
+
+            recording_info_layout.addLayout(row_layout)
+        
+        
     
     def toggle_mode(self):
         if self.view_cleaned_file == 1:
@@ -173,6 +204,23 @@ class MyWindow(QMainWindow):
         # print(self.selected_files)
         self.resize(1280, 720)
         self.update_plots(idx, item.text())
+        self.update_info(idx, item.text())
+    
+    def update_info(self, idx, datafile):
+        length_label = self.lengths[idx]
+        freq_label = self.frequencies[idx]
+        full_path = os.path.join(
+            self.folders[idx], datafile
+        )
+        cleaned = False
+        if "clean" in datafile or "ui_trims" in full_path:
+            cleaned = True
+        header_size = 0 if cleaned else 5
+        df = pd.read_csv(full_path, header=header_size)
+        length = viewer_utils.get_recording_length(df)
+        freq = viewer_utils.get_frequency(df)
+        length_label.setText(f"{self.hints['len']} {idx + 1}: {length}")
+        freq_label.setText(f"{self.hints['freq']} {idx + 1}: {freq}")
     
     def update_plots(self, idx, datafile):
         figure = self.figures[idx]
