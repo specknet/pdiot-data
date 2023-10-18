@@ -1,6 +1,0 @@
-# Sensor position: Front pocket (trouser)
-# Sensor side: Left
-# Activity type: Sitting
-# Activity code: 0
-# Subject id: S2017768
-timestamp,seq,accel_x,accel_y,accel_z

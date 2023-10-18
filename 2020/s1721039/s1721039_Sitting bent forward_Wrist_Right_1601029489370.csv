@@ -1,6 +1,0 @@
-# Sensor position: Wrist
-# Sensor side: Right
-# Activity type: Sitting bent forward
-# Activity code: 4
-# Subject id: s1721039
-timestamp,seq,accel_x,accel_y,accel_z
